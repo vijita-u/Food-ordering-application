@@ -17,12 +17,12 @@ const RestaurantCard = ({ data }) => {
         <p className="absolute top-3 right-4 text-[12px] font-semibold text-[#c72c2c]">
           {data?.sla?.deliveryTime} mins
         </p>
-        <div>
-        <h3 className="font-semibold text-[18px]">{data?.name}</h3>
+        <div className="pt-8">
+        <h3 className="font-semibold text-[18px] leading-tight">{data?.name}</h3>
         <p className="text-[12px] capitalize">{data?.areaName}</p>
         </div>
         <div className="absolute top-3 left-4 flex items-center gap-1 text-[12px]">
-          <StarOutlinedIcon sx={{ color: "#fb9334", fontSize: 18 }} />
+          <StarOutlinedIcon sx={{ color: "#febc04", fontSize: 18 }} />
           <p>{data?.avgRatingString}</p>
         </div>
         <p className="text-[14px] text-accent font-medium">

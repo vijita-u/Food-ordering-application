@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import RestaurantCard from "./RestaurantCard";
+import ShimmerUI from "./ShimmerUI";
 
 const Body = () => {
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
+  const [filteredList, setFilteredList] = useState([]);
   const [topRatedFilter, setTopRatedFilter] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
     fetchData();
@@ -26,8 +29,7 @@ const Body = () => {
       json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
         ?.restaurants;
     setListOfRestaurants(unfilteredData);
-
-    console.log(topRatedFilter);
+    setFilteredList(unfilteredData);
   };
 
   const handleTopRatedFilter = () => {
@@ -36,10 +38,23 @@ const Body = () => {
       const filteredList = listOfRestaurants.filter(
         (restaurant) => restaurant?.info?.avgRating >= 4.3
       );
-      setListOfRestaurants(filteredList);
+      setFilteredList(filteredList);
     } else {
-      fetchData(); // Reset to the unfiltered list when the filter is turned off
+      setFilteredList(listOfRestaurants);
     }
+  };
+
+  const handleSearch = (searchValue) => {
+    const filteredList = listOfRestaurants.filter(
+      (restaurant) =>
+        restaurant?.info?.name.toLowerCase().includes(searchValue) ||
+        restaurant?.info?.cuisines
+          .join(", ")
+          .toLowerCase()
+          .includes(searchValue)
+    );
+    setFilteredList(filteredList);
+    searchValue.length == 1 && setFilteredList(listOfRestaurants);
   };
 
   return (
@@ -51,7 +66,16 @@ const Body = () => {
         </h1>
         <div className="flex items-center gap-5">
           <div className="flex items-center gap-2 bg-accent rounded-md pr-2 overflow-hidden">
-            <input type="text" className="outline-none px-2 py-1" />
+            <input
+              type="search"
+              results="5"
+              className="outline-none px-2 py-1"
+              value={searchValue}
+              onChange={(e) => {
+                setSearchValue(e.target.value);
+                handleSearch(searchValue);
+              }}
+            />
             <SearchOutlinedIcon sx={{ fontSize: "large" }} />
           </div>
           <button
@@ -63,11 +87,17 @@ const Body = () => {
         </div>
       </div>
       {/* RestoCard container */}
-      <div className="flex gap-7 flex-wrap items-center justify-center">
-        {listOfRestaurants.map((restaurant) => {
-          return <RestaurantCard key={restaurant.id} data={restaurant.info} />;
-        })}
-      </div>
+      {listOfRestaurants.length === 0 ? (
+        <ShimmerUI />
+      ) : (
+        <div className="flex gap-7 flex-wrap items-center ">
+          {filteredList.map((restaurant) => {
+            return (
+              <RestaurantCard key={restaurant.id} data={restaurant.info} />
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
