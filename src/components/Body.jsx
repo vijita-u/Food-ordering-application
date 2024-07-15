@@ -1,8 +1,30 @@
-import React from "react";
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import React, { useEffect, useState } from "react";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import RestaurantCard from "./RestaurantCard";
 
 const Body = () => {
+  const [listOfRestaurants, setListOfRestaurants] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+    console.log(listOfRestaurants);
+  }, []);
+
+  const fetchData = async () => {
+    const data = await fetch(
+      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=18.9707178&lng=73.01200519999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+    );
+
+    // Convert this data into json format
+    const json = await data.json();
+    console.log(
+      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants[0].info
+    );
+    setListOfRestaurants(
+      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+    );
+  };
+
   return (
     <div className="flex flex-col gap-10">
       {/* Body header - "Food Delivery Restaurants in Mumbai" | search + top rated restaurants */}
@@ -20,11 +42,9 @@ const Body = () => {
       </div>
       {/* RestoCard container */}
       <div className="flex gap-7 flex-wrap">
-        <RestaurantCard />
-        <RestaurantCard />
-        <RestaurantCard />
-        <RestaurantCard />
-        <RestaurantCard />
+        {listOfRestaurants.map((restaurant) => {
+          return ( <RestaurantCard data={restaurant.info} />)
+        })}
       </div>
     </div>
   );
