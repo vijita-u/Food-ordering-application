@@ -4,6 +4,7 @@ import RestaurantCard from "./RestaurantCard";
 
 const Body = () => {
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
+  const [topRatedFilter, setTopRatedFilter] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -18,11 +19,27 @@ const Body = () => {
     // Convert this data into json format
     const json = await data.json();
     console.log(
-      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants[0].info
+      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
+        ?.restaurants[0].info
     );
-    setListOfRestaurants(
-      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-    );
+    const unfilteredData =
+      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
+        ?.restaurants;
+    setListOfRestaurants(unfilteredData);
+
+    console.log(topRatedFilter);
+  };
+
+  const handleTopRatedFilter = () => {
+    setTopRatedFilter(!topRatedFilter);
+    if (!topRatedFilter) {
+      const filteredList = listOfRestaurants.filter(
+        (restaurant) => restaurant?.info?.avgRating >= 4.3
+      );
+      setListOfRestaurants(filteredList);
+    } else {
+      fetchData(); // Reset to the unfiltered list when the filter is turned off
+    }
   };
 
   return (
@@ -37,13 +54,18 @@ const Body = () => {
             <input type="text" className="outline-none px-2 py-1" />
             <SearchOutlinedIcon sx={{ fontSize: "large" }} />
           </div>
-          <button className="btn-secondary">Top Rated Restaurants</button>
+          <button
+            className={topRatedFilter == true ? "btn-primary" : "btn-secondary"}
+            onClick={handleTopRatedFilter}
+          >
+            Top Rated Restaurants
+          </button>
         </div>
       </div>
       {/* RestoCard container */}
-      <div className="flex gap-7 flex-wrap">
+      <div className="flex gap-7 flex-wrap items-center justify-center">
         {listOfRestaurants.map((restaurant) => {
-          return ( <RestaurantCard data={restaurant.info} />)
+          return <RestaurantCard key={restaurant.id} data={restaurant.info} />;
         })}
       </div>
     </div>
