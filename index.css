@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .list-primary {
+      @apply cursor-pointer hover:text-accent;
+    };
+
+    button {
+        @apply font-medium rounded-md text-[12px] min-h-[2rem] px-2 min-w-[100px] cursor-pointer
+    }
+
+    .btn-primary {
+        @apply text-white border bg-accent border-accent hover:text-accent hover:bg-white
+    }
+
+    .btn-secondary {
+        @apply text-accent border border-accent hover:text-white hover:bg-accent active:text-white active:bg-accent
+    }
+  }
+  
