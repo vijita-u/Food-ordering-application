@@ -4,7 +4,7 @@ const ShimmerCards = () => {
   return (
     <div className="bg-[#e3e2e2] rounded-lg w-[300px] h-[390px]">
       <div className="h-[150px] w-full"></div>
-      <div className="h-[240px] w-full"></div>
+      <div className="h-[200px] w-full"></div>
     </div>
   );
 };

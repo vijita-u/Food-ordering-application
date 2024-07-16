@@ -11,7 +11,6 @@ const Body = () => {
 
   useEffect(() => {
     fetchData();
-    console.log(listOfRestaurants);
   }, []);
 
   const fetchData = async () => {
@@ -22,9 +21,12 @@ const Body = () => {
     // Convert this data into json format
     const json = await data.json();
     console.log(
-      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
-        ?.restaurants[0].info
+      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants[0].info
     );
+    // console.log(
+    //   json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
+    //     ?.restaurants[0].info
+    // );
     const unfilteredData =
       json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
         ?.restaurants;

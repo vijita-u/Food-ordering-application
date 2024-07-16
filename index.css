@@ -3,9 +3,17 @@
 @tailwind utilities;
 
 @layer components {
+    html {
+        height: auto;
+    }
+
     .list-primary {
       @apply cursor-pointer hover:text-accent;
     };
+
+    .list-selected {
+        @apply cursor-pointer text-accent;
+    }
 
     button {
         @apply font-medium rounded-md text-[12px] min-h-[2rem] px-2 min-w-[100px] cursor-pointer
