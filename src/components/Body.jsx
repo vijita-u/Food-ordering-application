@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import RestaurantCard from "./RestaurantCard";
 import ShimmerUI from "./ShimmerUI";
+import { Link } from "react-router-dom";
 
 const Body = () => {
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
@@ -20,9 +21,6 @@ const Body = () => {
 
     // Convert this data into json format
     const json = await data.json();
-    console.log(
-      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants[0].info
-    );
     // console.log(
     //   json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
     //     ?.restaurants[0].info
@@ -89,13 +87,15 @@ const Body = () => {
         </div>
       </div>
       {/* RestoCard container */}
-      {listOfRestaurants.length === 0 ? (
+      {listOfRestaurants?.length === 0 ? (
         <ShimmerUI />
       ) : (
         <div className="flex gap-7 flex-wrap items-center ">
-          {filteredList.map((restaurant) => {
+          {filteredList?.map((restaurant) => {
             return (
-              <RestaurantCard key={restaurant.id} data={restaurant.info} />
+              <Link key={restaurant?.info?.id} to={`/restaurants/${restaurant?.info?.id}`}>
+              <RestaurantCard data={restaurant?.info} />
+              </Link>
             );
           })}
         </div>

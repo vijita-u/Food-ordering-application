@@ -11,7 +11,7 @@ import RestaurantMenu from "./components/RestaurantMenu";
 
 const App = () => {
   return (
-    <div className="bg-background font-body font-normal tracking-wider w-dvw pb-10 px-10">
+    <div className="bg-background font-body font-normal tracking-wider w-dvw h-auto pb-10 px-10">
       <Header />
       <Outlet />
     </div>
@@ -41,7 +41,7 @@ const appRouter = createBrowserRouter([
         element: <Cart />,
       },
       {
-        path: "/restaurants/:resName-resId",
+        path: "/restaurants/:resId",
         element: <RestaurantMenu />,
       },
     ],

@@ -4,7 +4,7 @@
 
 @layer components {
     html {
-        height: auto;
+        @apply h-auto min-w-full;
     }
 
     .list-primary {
