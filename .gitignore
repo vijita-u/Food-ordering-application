@@ -2,4 +2,5 @@
 /dist
 /.parcel-cache
 .DS_Store
-.variables.txt
+/src/components/AboutPage.jsx
+/src/classComponents/UserClass.js

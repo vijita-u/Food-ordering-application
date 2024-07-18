@@ -11,7 +11,7 @@ const Header = () => {
       <nav className="flex justify-between items-center">
         <ul className="flex gap-10">
           <li className={location.pathname == "/" ? "list-selected": "list-primary"}><Link to={"/"}>Home</Link></li>
-          <li className={location.pathname == "/about" ? "list-selected": "list-primary"}><Link to={"/about"}>About</Link></li>
+          {/* <li className={location.pathname == "/about" ? "list-selected": "list-primary"}><Link to={"/about"}>About</Link></li> */}
           <li className={location.pathname == "/contact" ? "list-selected": "list-primary"}><Link to={"/contact"}>Contact</Link></li>
         </ul>
       </nav>
