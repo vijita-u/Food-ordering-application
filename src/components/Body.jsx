@@ -47,7 +47,7 @@ const Body = () => {
   return (
     <div className="flex flex-col gap-10">
       {/* Body header - "Food Delivery Restaurants in Mumbai" | search + top rated restaurants */}
-      <div className="mt-20 flex items-center justify-between">
+      <div className="mt-20 flex flex-col gap-4 md:flex-row items-center justify-between">
         <h1 className="font-bold text-[1.6rem]">
           Food Delivery Restaurants in Mumbai
         </h1>
@@ -77,7 +77,7 @@ const Body = () => {
       {restaurantListData?.length === 0 ? (
         <ShimmerUI />
       ) : (
-        <div className="flex gap-7 flex-wrap items-center ">
+        <div className="justify-center flex gap-7 flex-wrap items-center ">
           {filteredList?.map((restaurant) => {
             return (
               <Link
@@ -88,6 +88,9 @@ const Body = () => {
               </Link>
             );
           })}
+          <div className="h-[150px] w-[300px] rounded-lg"></div>
+          <div className="h-[150px] w-[300px] rounded-lg"></div>
+          <div className="h-[150px] w-[300px] rounded-lg"></div>
         </div>
       )}
     </div>

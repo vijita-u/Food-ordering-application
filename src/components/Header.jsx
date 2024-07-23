@@ -19,24 +19,26 @@ const Header = () => {
 
   return (
     <header className="h-[6rem] flex items-center justify-between">
+      <Link to="/">
       <p className="font-logo text-[3rem] text-accent font-bold">Honger</p>
+      </Link>
       <nav className="flex justify-between items-center">
         <ul className="flex gap-10">
-          <li
+          {/* <li
             className={
               location.pathname == "/" ? "list-selected" : "list-primary"
             }
           >
             <Link to={"/"}>Home</Link>
-          </li>
+          </li> */}
           {/* <li className={location.pathname == "/about" ? "list-selected": "list-primary"}><Link to={"/about"}>About</Link></li> */}
-          <li
+          {/* <li
             className={
               location.pathname == "/contact" ? "list-selected" : "list-primary"
             }
           >
             <Link to={"/contact"}>Contact</Link>
-          </li>
+          </li> */}
         </ul>
       </nav>
       <div className="flex items-center gap-7 relative">
