@@ -3,58 +3,45 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import RestaurantCard from "./RestaurantCard";
 import ShimmerUI from "./ShimmerUI";
 import { Link } from "react-router-dom";
+import useRestaurantList from "../utils/useRestaurantList";
 
 const Body = () => {
-  const [listOfRestaurants, setListOfRestaurants] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
   const [topRatedFilter, setTopRatedFilter] = useState(false);
   const [searchValue, setSearchValue] = useState("");
 
+  const { restaurantListData } = useRestaurantList();
+
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (restaurantListData?.length > 0) {
+      setFilteredList(restaurantListData);
+    }
+  }, [restaurantListData]);
 
-  const fetchData = async () => {
-    const data = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=18.9707178&lng=73.01200519999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
-    );
-
-    // Convert this data into json format
-    const json = await data.json();
-    // console.log(
-    //   json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
-    //     ?.restaurants[0].info
-    // );
-    const unfilteredData =
-      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
-        ?.restaurants;
-    setListOfRestaurants(unfilteredData);
-    setFilteredList(unfilteredData);
-  };
 
   const handleTopRatedFilter = () => {
     setTopRatedFilter(!topRatedFilter);
     if (!topRatedFilter) {
-      const filteredList = listOfRestaurants.filter(
+      const filteredList = restaurantListData?.filter(
         (restaurant) => restaurant?.info?.avgRating >= 4.3
       );
       setFilteredList(filteredList);
     } else {
-      setFilteredList(listOfRestaurants);
+      setFilteredList(restaurantListData);
     }
   };
 
   const handleSearch = (searchValue) => {
-    const filteredList = listOfRestaurants.filter(
+    const filteredList = restaurantListData?.filter(
       (restaurant) =>
-        restaurant?.info?.name.toLowerCase().includes(searchValue) ||
+        restaurant?.info?.name.toLowerCase()?.includes(searchValue) ||
         restaurant?.info?.cuisines
           .join(", ")
           .toLowerCase()
           .includes(searchValue)
     );
     setFilteredList(filteredList);
-    searchValue.length == 1 && setFilteredList(listOfRestaurants);
+    searchValue.length == 1 && setFilteredList(restaurantListData);
   };
 
   return (
@@ -72,7 +59,7 @@ const Body = () => {
               className="outline-none px-2 py-1"
               value={searchValue}
               onChange={(e) => {
-                setSearchValue(e.target.value);
+                setSearchValue(e?.target?.value);
                 handleSearch(searchValue);
               }}
             />
@@ -87,14 +74,17 @@ const Body = () => {
         </div>
       </div>
       {/* RestoCard container */}
-      {listOfRestaurants?.length === 0 ? (
+      {restaurantListData?.length === 0 ? (
         <ShimmerUI />
       ) : (
         <div className="flex gap-7 flex-wrap items-center ">
           {filteredList?.map((restaurant) => {
             return (
-              <Link key={restaurant?.info?.id} to={`/restaurants/${restaurant?.info?.id}`}>
-              <RestaurantCard data={restaurant?.info} />
+              <Link
+                key={restaurant?.info?.id}
+                to={`/restaurants/${restaurant?.info?.id}`}
+              >
+                <RestaurantCard data={restaurant?.info} />
               </Link>
             );
           })}

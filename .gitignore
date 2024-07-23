@@ -2,5 +2,6 @@
 /dist
 /.parcel-cache
 .DS_Store
-/src/components/AboutPage.jsx
-/src/classComponents/UserClass.js
+# /src/components/AboutPage.jsx
+# /src/classComponents/UserClass.js
+# /src/classComponents

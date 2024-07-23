@@ -1,20 +1,26 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
 import Body from "./components/Body";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import ContactPage from "./components/ContactPage";
 import ErrorBoundary from "./components/ErrorBoundary";
-import AboutPage from "./components/AboutPage";
+// import AboutPage from "./components/AboutPage";
 import Cart from "./components/Cart";
 import RestaurantMenu from "./components/RestaurantMenu";
+import { Provider } from "react-redux";
+import appStore from "./utils/appStore";
+
+// const AboutPage = lazy(() => import("./components/AboutPage"));
 
 const App = () => {
   return (
-    <div className="bg-background font-body font-normal tracking-wider w-dvw h-auto pb-10 px-10">
-      <Header />
-      <Outlet />
-    </div>
+    <Provider store={appStore}>
+      <div className="bg-background font-body font-normal tracking-wider w-dvw h-auto pb-10 px-10">
+        <Header />
+        <Outlet />
+      </div>
+    </Provider>
   );
 };
 
@@ -30,7 +36,7 @@ const appRouter = createBrowserRouter([
       },
       // {
       //   path: "/about",
-      //   element: <AboutPage />,
+      //   element: <Suspense fallback={<h1>Loading...</h1>}><AboutPage /></Suspense>,
       // },
       {
         path: "/contact",

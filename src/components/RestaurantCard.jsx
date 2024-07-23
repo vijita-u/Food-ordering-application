@@ -27,7 +27,7 @@ const RestaurantCard = ({ data }) => {
           <p>{data?.avgRatingString}</p>
         </div>
         <p className="text-[14px] text-accent font-medium">
-          {data.costForTwo.split(" ")[0]}{" "}
+          {data?.costForTwo?.split(" ")[0]}{" "}
           <span className=" text-[12px]">for two</span>
         </p>
         <p className="text-[13px] text-[#747474]">{data?.cuisines.join(", ")}</p>

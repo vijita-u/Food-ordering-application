@@ -2,34 +2,19 @@ import StarIcon from "@mui/icons-material/Star";
 import WatchLaterIcon from "@mui/icons-material/WatchLater";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import ToggleBtn from "./atoms/ToggleBtn";
-import { useEffect, useState } from "react";
-import Accordian from "./atoms/Accordian";
+import { useState } from "react";
+import Accordion from "./atoms/Accordion";
 import ShimmerUI from "./ShimmerUI";
 import { Link, useParams } from "react-router-dom";
+import useRestaurantData from "../utils/useRestaurantData";
 
 const RestaurantMenu = () => {
-  const [restaurantData, setRestaurantData] = useState([]);
-  const [restaurantMenu, setRestaurantMenu] = useState([]);
   const [isVegOnly, setIsVegOnly] = useState(false);
+  const [openAccordion, setOpenAccordion] = useState(null);
 
   const { resId } = useParams();
 
-  useEffect(() => {
-    fetchMenuData();
-  }, []);
-
-  const fetchMenuData = async () => {
-    const data = await fetch(
-      `https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=18.9707178&lng=73.01200519999999&restaurantId=${resId}&catalog_qa=undefined&submitAction=ENTER`
-    );
-
-    const json = await data.json();
-    const menuData =
-      json?.data?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards;
-    setRestaurantMenu(menuData);
-    setRestaurantMenu(menuData?.splice(3, menuData?.length - 3));
-    setRestaurantData(json?.data?.cards[2]?.card?.card?.info);
-  };
+  const { restaurantData, restaurantMenu } = useRestaurantData(resId);
 
   const handleVegFilter = () => {
     setIsVegOnly(!isVegOnly);
@@ -41,9 +26,12 @@ const RestaurantMenu = () => {
         <ShimmerUI />
       ) : (
         <div className="flex justify-center mt-10">
-          <div className=" w-[60%] h-auto">
+          <div className=" w-7/12 h-auto">
             <p className="text-[12px] text-gray-400 font-normal">
-              <Link to="/" className="hover:text-black">Home</Link> / Mumbai /{" "}
+              <Link to="/" className="hover:text-black">
+                Home
+              </Link>{" "}
+              / Mumbai /{" "}
               <span className="text-black">{restaurantData?.name}</span>
             </p>
             {/* First Card */}
@@ -104,7 +92,7 @@ const RestaurantMenu = () => {
             </div>
             {/* Fourth Card - Menu */}
             <div className="p-4 my-4 border-y-[10px] border-y-[#e5e5e5] flex flex-col gap-8 ">
-              {restaurantMenu?.map((mainMenu) => {
+              {restaurantMenu?.map((mainMenu, index) => {
                 const categories = mainMenu?.card?.card?.categories;
                 const title = mainMenu?.card?.card?.title;
                 const items = mainMenu?.card?.card?.itemCards;
@@ -116,9 +104,13 @@ const RestaurantMenu = () => {
                     <h2 className="font-extrabold">{title}</h2>
                     <div className="w-full">
                       {items ? (
-                        <Accordian
+                        <Accordion
                           title={title}
                           data={isVegOnly ? vegItems : items}
+                          open={index === openAccordion}
+                          handleAccordion={() => {
+                            (index === openAccordion ? setOpenAccordion(null) : setOpenAccordion(index))
+                          }}
                         />
                       ) : (
                         categories?.map((items) => {
@@ -127,10 +119,14 @@ const RestaurantMenu = () => {
                             (menuItem) => menuItem?.card?.info?.isVeg === 1
                           );
                           return (
-                            <Accordian
-                                key={items?.title}
+                            <Accordion
+                              key={items?.title}
                               title={items?.title}
                               data={isVegOnly ? vegOnlyData : unfilteredData}
+                              open={index === openAccordion}
+                              handleAccordion={() => {
+                                (index === openAccordion ? setOpenAccordion(null) : setOpenAccordion(index))
+                              }}
                             />
                           );
                         })
